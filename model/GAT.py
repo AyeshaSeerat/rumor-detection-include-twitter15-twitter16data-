@@ -11,7 +11,11 @@ class SpecialSpmmFunction(torch.autograd.Function):
     @staticmethod
     def forward(ctx, indices, values, shape, b):
         assert indices.requires_grad == False
-        a = torch.sparse_coo_tensor(indices, values, shape)
+        # Ensure both `indices` and `values` are on the same device
+        device = values.device  # Get the device where `values` is located
+        indices = indices.to(device)  # Move `indices` to the same device
+        a = torch.sparse_coo_tensor(indices, values, shape, device=device)
+
         ctx.save_for_backward(a, b)
         ctx.N = shape[0]
         return torch.matmul(a, b)
@@ -60,7 +64,7 @@ class SpGraphAttentionLayer(nn.Module):
 
     def forward(self, input, adj):
         N = input.size()[0]
-        edge = torch.LongTensor(adj.nonzero())
+        edge = torch.tensor(adj.nonzero(), dtype=torch.long, device='cuda')
 
         h = torch.mm(input, self.W)
         # h: N x out

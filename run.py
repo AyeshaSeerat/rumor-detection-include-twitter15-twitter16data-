@@ -4,7 +4,7 @@ import torch
 from sklearn.metrics import classification_report
 from model.GLAN import GLAN
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+#os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 def load_dataset(task):
     X_train_tid, X_train, y_train, word_embeddings, adj = pickle.load(open("dataset/"+task+"/train.pkl", 'rb'))
@@ -49,7 +49,7 @@ config = {
 
 
 if __name__ == '__main__':
-    task = 'twitter15'
+    task = 'weibo'
     # task = 'twitter16'
     # task = 'weibo'
     print("task: ", task)
@@ -60,4 +60,3 @@ if __name__ == '__main__':
 
     model = GLAN
     train_and_test(model, task)
-

@@ -100,4 +100,3 @@ class GLAN(NeuralNetwork):
 # accuracy                        0.90217       184
 # macro avg    0.90579   0.90120   0.90138       184
 # weighted avg    0.90610   0.90217   0.90204       184
-
